@@ -111,3 +111,25 @@ export const Login = async (req, res) => {
     });
   }
 };
+
+export const Logout = async (req, res) => {
+  try {
+    res.clearCookie("token"),
+      {
+        httpOnly: true,
+        sameSite: "strict",
+        maxAge: 360 * 24 * 60 * 60 * 1000,
+      };
+    return res.status(200).json({
+      message: `User  logged out successfully`,
+      success: true,
+    });
+  } catch (error) {
+    console.log("Logout Error is ", error);
+    res.status(500).json({
+      message: error,
+      success: false,
+      error: true,
+    });
+  }
+};
