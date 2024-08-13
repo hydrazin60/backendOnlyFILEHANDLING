@@ -104,7 +104,7 @@ export const Login = async (req, res) => {
         user: userData,
       });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     return res.status(500).json({
       message: error,
       success: false,
@@ -125,8 +125,35 @@ export const Logout = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log("Logout Error is ", error);
+    console.log("Logout Error is ", error.message);
     res.status(500).json({
+      message: error,
+      success: false,
+      error: true,
+    });
+  }
+};
+
+export const getProfile = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: "User found successfully",
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
       message: error,
       success: false,
       error: true,
