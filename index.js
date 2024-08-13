@@ -2,6 +2,7 @@ import express, { urlencoded } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import authRouter from "./routes/user.routes.js";
 
 const app = express();
 const PORT = 4000;
@@ -15,7 +16,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
-
+app.use("/testbackend/api/v1/user",  authRouter )
 
 
 app.listen(PORT, () => {
