@@ -164,11 +164,60 @@ export const getProfile = async (req, res) => {
   }
 };
 
+// export const editProfile = async (req, res) => {
+//   try {
+//     const userId = req.id;
+//     const { username, bio, gender } = req.body;
+//     const { profilePic, coverPic } = req.files || {};
+//     let cloudResponse;
+
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).json({
+//         message: "User not found",
+//         success: false,
+//       });
+//     }
+
+//     if (profilePic && profilePic[0]) {
+//       const profilePicUri = getDatauri(profilePic[0]);
+//       cloudResponse = await cloudinary.uploader.upload(profilePicUri);
+//       console.log(profilePicUri);
+//       user.profilePic = cloudResponse.secure_url;
+//     }
+
+//     if (coverPic && coverPic[0]) {
+//       const coverPicUri = getDatauri(coverPic[0]);
+//       cloudResponse = await cloudinary.uploader.upload(coverPicUri);
+//       console.log(coverPicUri);
+//       user.coverPic = cloudResponse.secure_url;
+//     }
+
+//     if (bio) user.bio = bio;
+//     if (gender) user.gender = gender;
+//     if (username) user.username = username;
+
+//     await user.save();
+//     return res.status(200).json({
+//       message: "Profile updated successfully",
+//       success: true,
+//       user,
+//     });
+//   } catch (error) {
+//     console.log(error.message);
+//     res.status(500).json({
+//       message: error.message,
+//       success: false,
+//       error: true,
+//     });
+//   }
+// };
+
 export const editProfile = async (req, res) => {
   try {
     const userId = req.id;
-    const { username, bio, gender  } = req.body;
-    const { profilePic, coverPic } = req.files || {}; // Use fallback to an empty object
+    const { username, bio, gender } = req.body;
+    const { profilePic, coverPic } = req.files || {};
     let cloudResponse;
 
     const user = await User.findById(userId);
@@ -181,15 +230,13 @@ export const editProfile = async (req, res) => {
 
     if (profilePic && profilePic[0]) {
       const profilePicUri = getDatauri(profilePic[0]);
-      cloudResponse = await cloudinary.uploader.upload(profilePicUri);
-      console.log(profilePicUri);
+      cloudResponse = await cloudinary.uploader.upload(profilePicUri.content); // Use .content for DataURI format
       user.profilePic = cloudResponse.secure_url;
     }
 
     if (coverPic && coverPic[0]) {
       const coverPicUri = getDatauri(coverPic[0]);
-      cloudResponse = await cloudinary.uploader.upload(coverPicUri);
-      console.log(coverPicUri);
+      cloudResponse = await cloudinary.uploader.upload(coverPicUri.content); // Use .content for DataURI format
       user.coverPic = cloudResponse.secure_url;
     }
 
