@@ -243,7 +243,6 @@ export const editProfile = async (req, res) => {
     if (bio) user.bio = bio;
     if (gender) user.gender = gender;
     if (username) user.username = username;
-
     await user.save();
     return res.status(200).json({
       message: "Profile updated successfully",
@@ -252,7 +251,7 @@ export const editProfile = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({
+    return res.status(500).json({
       message: error.message,
       success: false,
       error: true,

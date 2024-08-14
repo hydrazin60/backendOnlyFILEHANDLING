@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/user.routes.js";
+import { Fileerrorhandler } from "./middlewares/Fileerrorhandling.js";
 
 dotenv.config();
 
@@ -20,7 +21,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/testbackend/api/v1/user", authRouter);
-
+app.use(Fileerrorhandler)
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
